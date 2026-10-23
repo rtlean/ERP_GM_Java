@@ -13,6 +13,7 @@ A interface será criada para equipes imobiliárias que precisam enxergar rapida
 - Fundo claro azulado: `#F4F7FB`
 - Superfície: `#FFFFFF`
 - Texto principal: `#10233F`
+- Cor da Aba: `#D97706`
 - Sinal de atenção: `#D97706`
 - Sucesso: `#138A72`
 - Erro: `#B42318`
