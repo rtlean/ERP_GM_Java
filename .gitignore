@@ -1,0 +1,23 @@
+# Java
+backend/target/
+*.class
+*.log
+
+# Angular
+frontend/node_modules/
+frontend/dist/
+.angular/
+
+# Ambiente
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Sistema
+.DS_Store
+Thumbs.db
