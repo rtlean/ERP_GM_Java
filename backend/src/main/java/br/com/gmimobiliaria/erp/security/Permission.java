@@ -1,0 +1,20 @@
+package br.com.gmimobiliaria.erp.security;
+
+public enum Permission {
+    USERS_READ,
+    USERS_WRITE,
+    PROPERTIES_READ,
+    PROPERTIES_WRITE,
+    PEOPLE_READ,
+    PEOPLE_WRITE,
+    CRM_READ,
+    CRM_WRITE,
+    CONTRACTS_READ,
+    CONTRACTS_WRITE,
+    FINANCE_READ,
+    FINANCE_WRITE,
+    DOCUMENTS_READ,
+    DOCUMENTS_WRITE,
+    REPORTS_READ,
+    AUDIT_READ
+}
