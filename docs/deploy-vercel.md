@@ -30,6 +30,16 @@ Consulte as [evidências e pendências da implantação](validacao-implantacao.m
 
 4. Faça o deploy (push no `main` ou `vercel deploy --prod`).
 
+### Formato da conexão
+
+O nome deve ser exatamente `DATABASE_URL`. O valor deve ser apenas a URI
+`postgresql://USUARIO:SENHA_CODIFICADA@HOST:PORTA/postgres`, sem aspas, sem
+`DATABASE_URL=` e sem os colchetes usados como marcadores nos exemplos do provedor.
+Use percent-encoding nos caracteres especiais da senha (`#` → `%23`, `@` → `%40`,
+`[` → `%5B`, `]` → `%5D`). Preserve caracteres que realmente fazem parte da senha.
+A URL HTTPS do projeto e as chaves de API não são conexões PostgreSQL.
+Após alterar a variável em Production, faça um novo deploy para aplicar o valor.
+
 ## Verificação após cada deploy
 
 1. `GET /api/v1/health` responde `{"status":"ok","service":"erp-backend"}`.

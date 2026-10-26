@@ -14,10 +14,19 @@ public record DatabaseUrl(String jdbcUrl, String username, String password) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("DATABASE_URL não informada.");
         }
-        var uri = URI.create(value.trim());
+        final URI uri;
+        try {
+            uri = URI.create(value.trim());
+        } catch (IllegalArgumentException exception) {
+            // A causa original inclui a URL completa, inclusive a senha. Não propagá-la.
+            throw new IllegalArgumentException("DATABASE_URL inválida. Codifique os caracteres especiais das credenciais para uso em URL.");
+        }
         var scheme = uri.getScheme();
         if (!"postgres".equals(scheme) && !"postgresql".equals(scheme)) {
             throw new IllegalArgumentException("DATABASE_URL deve usar o esquema postgres:// ou postgresql://.");
+        }
+        if (uri.getHost() == null || uri.getFragment() != null) {
+            throw new IllegalArgumentException("DATABASE_URL inválida: confira o host e a codificação das credenciais.");
         }
         var userInfo = uri.getRawUserInfo();
         if (userInfo == null || !userInfo.contains(":")) {
