@@ -1,13 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  template: `
-    <main>
-      <h1>GM Imobiliária</h1>
-      <p>Fundação do novo ERP em Angular.</p>
-    </main>
-  `
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
 })
 export class AppComponent {}

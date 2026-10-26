@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: erp-backend
+  main:
+    banner-mode: off
+  datasource:
+    hikari:
+      # Containers da Vercel escalam horizontalmente; poucas conexões por instância protegem o pooler do Supabase.
+      maximum-pool-size: ${DB_POOL_SIZE:3}
+      minimum-idle: 0
+      idle-timeout: 20000
+      connection-timeout: 10000
+      read-only: false
+  # O schema pertence ao sistema atual: nada aqui cria ou altera tabelas.
+  sql:
+    init:
+      mode: never
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: false
+
+erp:
+  session:
+    # Obrigatório em produção: segredo exclusivo do novo sistema (>= 32 caracteres).
+    secret: ${SESSION_SECRET:}
+    cookie-name: erp_gm_session
+    ttl: 8h
+    secure-cookie: ${SESSION_COOKIE_SECURE:true}

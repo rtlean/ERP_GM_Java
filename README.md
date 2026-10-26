@@ -28,3 +28,45 @@ Nova implementação do ERP da GM Imobiliária com:
 - `docs/`: arquitetura, contratos e plano de migração
 
 Consulte [docs/plano-migracao.md](docs/plano-migracao.md) antes de implementar módulos.
+
+## Situação atual
+
+| Módulo | Novo sistema |
+|---|---|
+| Login (mesmos usuários e senhas) | Pronto |
+| Locadores, Imóveis, Locatários | Consulta |
+| Contratos, Financeiro, Relatório, Configurações | No sistema atual |
+
+## Rodar localmente
+
+Requisitos: Java 21 e Node 22.22.3+, 24.15.0+ ou 26+ (versões compatíveis com Angular 22).
+
+Com dados fictícios, sem acessar o Supabase:
+
+```bash
+cd backend && ./mvnw spring-boot:test-run -Dspring-boot.run.mainClass=br.com.gmimobiliaria.erp.LocalErpApplication
+# API em http://localhost:8080
+cd frontend && npm install && npm start        # http://localhost:4200
+```
+
+Login: `admin@ficticio.local` ou `operacional@ficticio.local`, senha `Senha@123`.
+
+Contra o banco real (o mesmo do sistema atual):
+
+```bash
+cd backend
+DATABASE_URL='postgresql://...' SESSION_SECRET='...' SESSION_COOKIE_SECURE=false ./mvnw spring-boot:run
+```
+
+## Testes
+
+```bash
+cd backend && ./mvnw test        # H2 em memória; nunca conecta no Supabase
+cd frontend && npm test
+```
+
+## Deploy
+
+Veja [docs/deploy-vercel.md](docs/deploy-vercel.md).
+
+Evidências e pendências da última verificação: [validação da implantação](docs/validacao-implantacao.md).

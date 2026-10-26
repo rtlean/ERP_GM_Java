@@ -16,6 +16,10 @@ public final class AccessPolicy {
                 && PERMISSIONS.getOrDefault(role, Set.of()).contains(permission);
     }
 
+    public static Set<Permission> permissionsOf(Role role) {
+        return role == null ? Set.of() : Set.copyOf(PERMISSIONS.getOrDefault(role, Set.of()));
+    }
+
     private static Map<Role, Set<Permission>> buildPermissions() {
         var permissions = new EnumMap<Role, Set<Permission>>(Role.class);
 
@@ -28,6 +32,19 @@ public final class AccessPolicy {
                 Permission.CONTRACTS_READ,
                 Permission.REPORTS_READ,
                 Permission.AUDIT_READ
+        ));
+        // Espelha o papel "user" do sistema atual (secretária): cadastros, contratos e lançamentos,
+        // sem usuários, configurações, exportação e auditoria.
+        permissions.put(Role.OPERACIONAL, EnumSet.of(
+                Permission.PROPERTIES_READ,
+                Permission.PROPERTIES_WRITE,
+                Permission.PEOPLE_READ,
+                Permission.PEOPLE_WRITE,
+                Permission.CONTRACTS_READ,
+                Permission.CONTRACTS_WRITE,
+                Permission.FINANCE_READ,
+                Permission.FINANCE_WRITE,
+                Permission.REPORTS_READ
         ));
         permissions.put(Role.CORRETOR, EnumSet.of(
                 Permission.PROPERTIES_READ,

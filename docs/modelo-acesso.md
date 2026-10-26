@@ -35,3 +35,16 @@ A interface apenas oculta ou desabilita ações. A validação obrigatória ocor
 - usuário inativo não acessa a API;
 - logout encerra a sessão;
 - ações críticas geram evento de auditoria.
+
+## Compatibilidade com o sistema atual
+
+Enquanto o banco for compartilhado, o papel vem de `company_users.role` (vínculo ativo com a imobiliária) ou, sem vínculo, de `users.role`. O banco só conhece dois valores:
+
+| Papel no banco | Perfil no novo sistema | Equivale a |
+|---|---|---|
+| `admin` | Administrador | Geruzio: acesso geral |
+| `user` | Operacional | Secretária: cadastros, contratos e lançamentos; sem usuários, configurações, exportação e auditoria |
+
+Os perfis Gestor, Corretor, Locação, Financeiro e Atendimento continuam definidos no código, mas só serão atribuídos quando houver decisão e migração aprovadas para gravá-los no banco.
+
+A cada requisição o backend relê no banco o status do usuário, a expiração do acesso temporário, `sessions_invalidated_at` e o vínculo ativo. Desativar alguém no sistema atual encerra também a sessão no novo sistema.

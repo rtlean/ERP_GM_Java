@@ -1,0 +1,24 @@
+# Container do backend na Vercel (service "backend" em ../vercel.json).
+# A Vercel desliga o container após 5 min sem tráfego; o arquivo CDS reduz o tempo da próxima subida.
+
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /build
+COPY pom.xml .
+RUN mvn -q -B dependency:go-offline
+COPY src src
+RUN mvn -q -B package -DskipTests \
+    && java -Djarmode=tools -jar target/erp-backend.jar extract --destination /app
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/ ./
+
+# Execução de treino: sobe o contexto sem atender requisições e grava as classes carregadas.
+# Valores fictícios só para o contexto subir; nenhuma conexão com banco é aberta nesta etapa.
+RUN DATABASE_URL="postgres://treino:treino@127.0.0.1:5432/treino" \
+    SESSION_SECRET="somente-para-o-treino-do-cds-0000000000" \
+    java -XX:ArchiveClassesAtExit=app.jsa -Dspring.context.exit=onRefresh -jar erp-backend.jar
+
+ENV PORT=80
+EXPOSE 80
+ENTRYPOINT ["java", "-XX:SharedArchiveFile=app.jsa", "-XX:MaxRAMPercentage=75", "-jar", "erp-backend.jar"]
